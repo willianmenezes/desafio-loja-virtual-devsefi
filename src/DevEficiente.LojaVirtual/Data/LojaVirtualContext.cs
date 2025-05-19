@@ -9,5 +9,9 @@ public class LojaVirtualContext : DbContext
     {
     }
 
+    protected LojaVirtualContext()
+    {
+    }
+
     public DbSet<Autor> Autores { get; set; }
 }

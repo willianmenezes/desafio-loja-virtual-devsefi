@@ -2,6 +2,7 @@ using DevEficiente.LojaVirtual.Data;
 using DevEficiente.LojaVirtual.Entities.Models;
 using DevEficiente.LojaVirtual.Entities.Requests;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace DevEficiente.LojaVirtual.Controllers;
 
@@ -17,10 +18,20 @@ public class AutoresController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<IActionResult> RegistrarAutores([FromBody] AutorRequest autorRequest)
+    public async Task<IActionResult> RegistrarAutores(
+        [FromBody] AutorRequest autorRequest,
+        CancellationToken cancellationToken)
     {
         Autor autor = autorRequest;
-        await _context.AddAsync(autor);
+        
+        var emailExistente = await _context.Autores.AnyAsync(x =>
+            string.Equals(x.Email, autor.Email, StringComparison.CurrentCultureIgnoreCase), cancellationToken);
+        
+        if (emailExistente)
+            return BadRequest("Email invalido");
+
+        await _context.AddAsync(autor, cancellationToken);
+        await _context.SaveChangesAsync(cancellationToken);
         return Ok(autor.Id);
     }
 }

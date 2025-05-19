@@ -1,5 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
-using System.Diagnostics.CodeAnalysis;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace DevEficiente.LojaVirtual.Entities.Models;
 
