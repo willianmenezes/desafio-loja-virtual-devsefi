@@ -6,31 +6,32 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DevEficiente.LojaVirtual.Controllers;
 
-[Route("autores")]
-public class AutoresController : MainController
+[Route("livros")]
+public class LivrosController : MainController
 {
     private readonly LojaVirtualContext _context;
 
-    public AutoresController( LojaVirtualContext context,
+    public LivrosController(
+        LojaVirtualContext context,
         IServiceProvider serviceProvider) : base(serviceProvider)
     {
         _context = context;
     }
-    
+
     [HttpPost]
     public async Task<IActionResult> Registrar(
-        [FromBody] AdicionarAutorRequest request,
+        [FromBody] AdicionarLivroRequest request,
         CancellationToken cancellationToken)
     {
         var validarErrorResult = await ValidarErrosAsync(request, cancellationToken);
 
         if (validarErrorResult.contemErros)
             return BadRequest(validarErrorResult.erro);
-        
-        Autor autor = request;
 
-        await _context.Autores.AddAsync(autor, cancellationToken);
+        Livro livro = request;
+
+        await _context.Livros.AddAsync(livro, cancellationToken);
         await _context.SaveChangesAsync(cancellationToken);
-        return Ok(autor.Id);
+        return Ok(livro.Id);
     }
 }

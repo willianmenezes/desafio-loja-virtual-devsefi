@@ -1,30 +1,20 @@
-﻿using System;
-using System.ComponentModel.DataAnnotations;
-
-namespace DevEficiente.LojaVirtual.Entities.Models;
+﻿namespace DevEficiente.LojaVirtual.Entities.Models;
 
 public sealed class Autor
 {
-    [Key]
-    public int Id { get; private set; }
+    public Guid Id { get; private set; }
     
-    [Required]
-    [MaxLength(100)]
     public string Nome { get; private set; }
     
-    [Required]
-    [MaxLength(100)]
     public string Email { get; private set; }
 
-    [Required]
-    [MaxLength(400)]
     public string Descricao { get; private set; }
 
-    [Required]
     public DateTime Cadastro { get; private set; }
 
     public Autor(string nome, string email, string descricao)
     {
+        Id = Guid.NewGuid();
         Nome = nome;
         Email = email;
         Descricao = descricao;

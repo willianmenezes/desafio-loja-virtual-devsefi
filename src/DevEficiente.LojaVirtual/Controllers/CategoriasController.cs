@@ -1,36 +1,37 @@
 using DevEficiente.LojaVirtual.Data;
 using DevEficiente.LojaVirtual.Entities.Models;
 using DevEficiente.LojaVirtual.Entities.Requests;
+using DevEficiente.LojaVirtual.Validators;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 namespace DevEficiente.LojaVirtual.Controllers;
 
-[Route("autores")]
-public class AutoresController : MainController
+[Route("categorias")]
+public class CategoriasController : MainController
 {
     private readonly LojaVirtualContext _context;
 
-    public AutoresController( LojaVirtualContext context,
+    public CategoriasController(
+        LojaVirtualContext context,
         IServiceProvider serviceProvider) : base(serviceProvider)
     {
         _context = context;
     }
-    
+
     [HttpPost]
     public async Task<IActionResult> Registrar(
-        [FromBody] AdicionarAutorRequest request,
+        [FromBody] AdicionarCategoriaRequest request,
         CancellationToken cancellationToken)
     {
         var validarErrorResult = await ValidarErrosAsync(request, cancellationToken);
 
         if (validarErrorResult.contemErros)
             return BadRequest(validarErrorResult.erro);
-        
-        Autor autor = request;
 
-        await _context.Autores.AddAsync(autor, cancellationToken);
+        Categoria categoria = request;
+
+        await _context.Categorias.AddAsync(categoria, cancellationToken);
         await _context.SaveChangesAsync(cancellationToken);
-        return Ok(autor.Id);
+        return Ok(categoria.Id);
     }
 }
