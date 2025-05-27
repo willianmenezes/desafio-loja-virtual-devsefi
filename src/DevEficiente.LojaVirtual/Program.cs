@@ -14,7 +14,7 @@ builder.Services.Configure<ApiBehaviorOptions>(options =>
 });
 
 builder.Services.AddValidatorsFromAssembly(typeof(Program).Assembly);
-builder.Services.AddDbContext<LojaVirtualContext>(options => options.UseInMemoryDatabase("LojaVirtual"));
+builder.Services.AddDbContext<LojaVirtualContext>(options => options.UseNpgsql(builder.Configuration.GetConnectionString("LojaVirtualDb")));
 
 var app = builder.Build();
 

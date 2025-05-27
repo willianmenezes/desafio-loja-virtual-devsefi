@@ -18,7 +18,7 @@ public sealed class AdicionarCategoriaRequestValidator : AbstractValidator<Adici
             .CustomAsync(async (nome, validationContext, cancellationToken) =>
             {
                 var existeTitulo = await context.Categorias.AnyAsync(x =>
-                    string.Equals(x.Nome, nome, StringComparison.InvariantCultureIgnoreCase), cancellationToken);
+                    x.Nome.ToLower() == nome.ToLower(), cancellationToken);
 
                 if (existeTitulo)
                     validationContext.AddFailure(new ValidationFailure("Nome", "Nome duplicado"));

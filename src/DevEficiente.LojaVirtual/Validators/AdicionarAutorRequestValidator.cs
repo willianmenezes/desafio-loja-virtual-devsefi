@@ -21,6 +21,8 @@ public sealed class AdicionarAutorRequestValidator : AbstractValidator<Adicionar
             .WithMessage("O email deve ser preenchido")
             .EmailAddress()
             .WithMessage("E-mail invalido")
+            .MaximumLength(100)
+            .WithMessage("O e-mail deve conter menos que 100 caracteres")
             .CustomAsync(async (email, validationContext, cancellationToken) =>
             {
                 var emailExistente = await context.Autores.AnyAsync(x =>

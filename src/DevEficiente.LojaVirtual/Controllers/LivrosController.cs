@@ -34,4 +34,10 @@ public class LivrosController : MainController
         await _context.SaveChangesAsync(cancellationToken);
         return Ok(livro.Id);
     }
+
+    [HttpGet]
+    public async Task<IActionResult> Obter(CancellationToken cancellationToken)
+    {
+        return Ok(await _context.Livros.ToListAsync(cancellationToken));
+    }
 }
