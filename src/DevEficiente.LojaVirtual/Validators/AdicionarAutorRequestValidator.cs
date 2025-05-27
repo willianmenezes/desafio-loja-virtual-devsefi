@@ -26,7 +26,7 @@ public sealed class AdicionarAutorRequestValidator : AbstractValidator<Adicionar
             .CustomAsync(async (email, validationContext, cancellationToken) =>
             {
                 var emailExistente = await context.Autores.AnyAsync(x =>
-                    string.Equals(x.Email, email, StringComparison.CurrentCultureIgnoreCase), cancellationToken);
+                    x.Email.ToLower() == email.ToLower(), cancellationToken);
 
                 if (emailExistente)
                     validationContext.AddFailure(new ValidationFailure("E-mail", "E-mail duplicado"));

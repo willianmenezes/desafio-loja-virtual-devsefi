@@ -4,9 +4,9 @@ public sealed class Livro
 {
     public Guid Id { get; set; }
 
-    public Guid IdCategoria { get; set; }
+    public Guid IdCategoria { get; private set; }
 
-    public Guid IdAutor { get; set; }
+    public Guid IdAutor { get; private set; }
 
     public string Titulo { get; private set; }
 

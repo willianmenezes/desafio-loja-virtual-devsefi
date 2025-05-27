@@ -26,7 +26,7 @@ public sealed class AdicionarLivroRequestValidator : AbstractValidator<Adicionar
             .CustomAsync(async (titulo, validationContext, cancellationToken) =>
             {
                 var existeTitulo = await context.Livros.AnyAsync(x =>
-                    string.Equals(x.Titulo, titulo, StringComparison.InvariantCultureIgnoreCase), cancellationToken);
+                    x.Titulo.ToLower() == titulo.ToLower(), cancellationToken);
 
                 if (existeTitulo)
                     validationContext.AddFailure(new ValidationFailure("Titulo", "Titulo duplicado"));
@@ -47,13 +47,13 @@ public sealed class AdicionarLivroRequestValidator : AbstractValidator<Adicionar
             .WithMessage("O preco deve ser informado")
             .GreaterThanOrEqualTo(20)
             .WithMessage("O preco deve ser no minimo 20");
-        
+
         RuleFor(request => request.NumeroPaginas)
             .NotEmpty()
             .WithMessage("O numero de paginas deve ser informado")
             .GreaterThanOrEqualTo(100)
             .WithMessage("O numero de paginas deve ser no minimo 100");
-        
+
         RuleFor(request => request.Isbn)
             .NotEmpty()
             .WithMessage("O ISBN deve ser informado");

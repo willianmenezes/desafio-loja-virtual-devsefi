@@ -1,6 +1,7 @@
 using DevEficiente.LojaVirtual.Data;
 using DevEficiente.LojaVirtual.Entities.Models;
 using DevEficiente.LojaVirtual.Entities.Requests;
+using DevEficiente.LojaVirtual.Entities.Responses;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -39,5 +40,20 @@ public class LivrosController : MainController
     public async Task<IActionResult> Obter(CancellationToken cancellationToken)
     {
         return Ok(await _context.Livros.ToListAsync(cancellationToken));
+    }
+
+    [HttpGet("/{id}")]
+    public async Task<IActionResult> ObterPorId(
+        [FromRoute] Guid id, 
+        CancellationToken cancellationToken)
+    {
+        var livro = await _context.Livros.FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
+
+        if (livro is null)
+            return NotFound("Id inexistente");
+
+        ObterLivroPorIdResponse response = livro; 
+        
+        return Ok(response);
     }
 }
