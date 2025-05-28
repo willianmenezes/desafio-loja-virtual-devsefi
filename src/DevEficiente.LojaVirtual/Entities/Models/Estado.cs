@@ -9,6 +9,8 @@ public sealed class Estado
     public string Nome { get; private set; }
 
     public Pais? Pais { get; set; }
+    
+    public IEnumerable<Compra>? Compras { get; set; }
 
     public Estado(Guid idPais, string nome)
     {

@@ -7,6 +7,7 @@ public sealed class Pais
     public string Nome { get; private set; }
 
     public IEnumerable<Estado>? Estados { get; set; }
+    public IEnumerable<Compra>? Compras { get; set; }
     
     public Pais(string nome)
     {
