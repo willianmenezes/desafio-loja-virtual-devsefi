@@ -22,9 +22,9 @@ public sealed class Livro
 
     public DateTime DataPublicacao { get; private set; }
 
-    public Categoria Categoria { get; private set; }
+    public Categoria Categoria { get; set; }
 
-    public Autor Autor { get; private set; }
+    public Autor Autor { get; set; }
 
     public Livro(
         Guid idCategoria,

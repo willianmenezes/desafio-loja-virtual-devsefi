@@ -1,16 +1,19 @@
 namespace DevEficiente.LojaVirtual.Entities.Models;
 
-public sealed class Categoria
+public sealed class Estado
 {
     public Guid Id { get; }
 
-    public string Nome { get; private set; }
-    
-    public IEnumerable<Livro>? Livros { get; set; }
+    public Guid IdPais { get; private set; }
 
-    public Categoria(string nome)
+    public string Nome { get; private set; }
+
+    public Pais? Pais { get; set; }
+
+    public Estado(Guid idPais, string nome)
     {
         Id = Guid.NewGuid();
+        IdPais = idPais;
         Nome = nome;
     }
 }

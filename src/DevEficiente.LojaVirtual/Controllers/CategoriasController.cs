@@ -1,7 +1,6 @@
 using DevEficiente.LojaVirtual.Data;
 using DevEficiente.LojaVirtual.Entities.Models;
 using DevEficiente.LojaVirtual.Entities.Requests;
-using DevEficiente.LojaVirtual.Validators;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DevEficiente.LojaVirtual.Controllers;

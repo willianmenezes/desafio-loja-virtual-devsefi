@@ -2,7 +2,7 @@
 
 public sealed class Autor
 {
-    public Guid Id { get; private set; }
+    public Guid Id { get; }
 
     public string Nome { get; private set; }
 

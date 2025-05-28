@@ -5,31 +5,30 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace DevEficiente.LojaVirtual.Controllers;
 
-[Route("autores")]
-public class AutoresController : MainController
+[Route("estados")]
+public sealed class EstadosController : MainController
 {
     private readonly LojaVirtualContext _context;
-
-    public AutoresController( LojaVirtualContext context,
-        IServiceProvider serviceProvider) : base(serviceProvider)
+    
+    public EstadosController(IServiceProvider serviceProvider, LojaVirtualContext context) : base(serviceProvider)
     {
         _context = context;
     }
     
     [HttpPost]
     public async Task<IActionResult> Registrar(
-        [FromBody] AdicionarAutorRequest request,
+        [FromBody] AdicionarEstadoRequest request,
         CancellationToken cancellationToken)
     {
         var validarErrorResult = await ValidarErrosAsync(request, cancellationToken);
 
         if (validarErrorResult.contemErros)
             return BadRequest(validarErrorResult.erro);
-        
-        Autor autor = request;
 
-        await _context.Autores.AddAsync(autor, cancellationToken);
+        Estado estado = request;
+
+        await _context.Estados.AddAsync(estado, cancellationToken);
         await _context.SaveChangesAsync(cancellationToken);
-        return Ok(autor.Id);
+        return Ok(estado.Id);
     }
 }
