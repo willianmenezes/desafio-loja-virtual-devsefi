@@ -3,6 +3,7 @@ using System;
 using DevEficiente.LojaVirtual.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace DevEficiente.LojaVirtual.Data.Migrations
 {
     [DbContext(typeof(LojaVirtualContext))]
-    partial class LojaVirtualContextModelSnapshot : ModelSnapshot
+    [Migration("20250530021210_AddCompra")]
+    partial class AddCompra
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -141,8 +144,6 @@ namespace DevEficiente.LojaVirtual.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("IdEstado");
-
                     b.HasIndex("IdPais");
 
                     b.ToTable("Compras", (string)null);
@@ -254,7 +255,9 @@ namespace DevEficiente.LojaVirtual.Data.Migrations
                 {
                     b.HasOne("DevEficiente.LojaVirtual.Entities.Models.Estado", "Estado")
                         .WithMany("Compras")
-                        .HasForeignKey("IdEstado")
+                        .HasForeignKey("IdPais")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
                         .HasConstraintName("FK_Compra_Estado_IdEstado");
 
                     b.HasOne("DevEficiente.LojaVirtual.Entities.Models.Pais", "Pais")

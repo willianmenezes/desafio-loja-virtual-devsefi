@@ -8,7 +8,7 @@ public sealed class AdicionarCompraRequest
 
     public Guid IdPais { get; set; }
 
-    public Guid IdEstado { get; set; }
+    public Guid? IdEstado { get; set; }
 
     public string Email { get; set; }
 

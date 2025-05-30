@@ -23,7 +23,10 @@ public sealed class AdicionarCompraRequestValidator : AbstractValidator<Adiciona
                     .Include(x => x.Estados)
                     .FirstOrDefaultAsync(x => x.Id == idPais, cancellationToken);
 
-                if (pais?.Estados?.Any(x => x.Id == id) ?? false)
+                if (!pais?.Estados?.Any() ?? true)
+                    return;
+
+                if (!pais.Estados.Any(x => x.Id == id))
                     validationContext.AddFailure(new ValidationFailure("Estado", "O estado precisa ser informado"));
             });
 
@@ -52,19 +55,19 @@ public sealed class AdicionarCompraRequestValidator : AbstractValidator<Adiciona
             .WithMessage("O documento deve ser preenchido")
             .Length(11, 14)
             .WithMessage("O documento deve conter entre 11 e 14 caracteres caracteres (CPF ou CNPJ)");
-        
+
         RuleFor(request => request.Endereco)
             .NotEmpty()
             .WithMessage("O endereco deve ser preenchido")
             .MaximumLength(250)
             .WithMessage("O endereco deve conter menos que 100 caracteres");
-        
+
         RuleFor(request => request.Complemento)
             .NotEmpty()
             .WithMessage("O complemento deve ser preenchido")
             .MaximumLength(250)
             .WithMessage("O complemento deve conter menos que 100 caracteres");
-        
+
         RuleFor(request => request.Cidade)
             .NotEmpty()
             .WithMessage("A cidade deve ser preenchido")
@@ -76,7 +79,7 @@ public sealed class AdicionarCompraRequestValidator : AbstractValidator<Adiciona
             .WithMessage("O telefone deve ser informado")
             .MaximumLength(11)
             .WithMessage("O telefone deve ter no maximo 11 caracteres");
-        
+
         RuleFor(request => request.Cep)
             .NotEmpty()
             .WithMessage("O cep deve ser informado")

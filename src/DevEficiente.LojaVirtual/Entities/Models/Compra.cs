@@ -6,7 +6,7 @@ public sealed class Compra
 
     public Guid IdPais { get; private set; }
 
-    public Guid IdEstado { get; private set; }
+    public Guid? IdEstado { get; private set; }
 
     public string Email { get; private set; }
 
@@ -32,7 +32,7 @@ public sealed class Compra
 
     public Compra(
         Guid idPais,
-        Guid idEstado,
+        Guid? idEstado,
         string email,
         string nome,
         string sobreNome,

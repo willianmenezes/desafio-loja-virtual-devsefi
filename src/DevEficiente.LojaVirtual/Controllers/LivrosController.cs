@@ -42,7 +42,7 @@ public class LivrosController : MainController
         return Ok(await _context.Livros.ToListAsync(cancellationToken));
     }
 
-    [HttpGet("/{id}")]
+    [HttpGet("{id}")]
     public async Task<IActionResult> ObterPorId(
         [FromRoute] Guid id, 
         CancellationToken cancellationToken)

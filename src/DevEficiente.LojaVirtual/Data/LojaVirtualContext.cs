@@ -34,4 +34,6 @@ public class LojaVirtualContext : DbContext
     public DbSet<Pais> Paises { get; set; }
     public DbSet<Estado> Estados { get; set; }
     public DbSet<Compra> Compras { get; set; }
+    public DbSet<Pedido> Pedidos { get; set; }
+    public DbSet<ItemPedido> ItensPedido { get; set; }
 }

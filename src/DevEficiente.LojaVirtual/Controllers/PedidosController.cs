@@ -5,21 +5,22 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace DevEficiente.LojaVirtual.Controllers;
 
-[Route("compras")]
-public class ComprasController : MainController
+[Route("pedidos")]
+public sealed class PedidosController : MainController
 {
     private readonly LojaVirtualContext _context;
-    
-    public ComprasController(
-        LojaVirtualContext context,
-        IServiceProvider serviceProvider) : base(serviceProvider)
+
+    public PedidosController(
+        IServiceProvider serviceProvider,
+        LojaVirtualContext context) : base(
+        serviceProvider)
     {
         _context = context;
     }
-
+    
     [HttpPost]
     public async Task<IActionResult> Registrar(
-        [FromBody] AdicionarCompraRequest request,
+        [FromBody] CriarPedidoRequest request,
         CancellationToken cancellationToken)
     {
         var validarErrorResult = await ValidarErrosAsync(request, cancellationToken);
@@ -27,10 +28,13 @@ public class ComprasController : MainController
         if (validarErrorResult.contemErros)
             return BadRequest(validarErrorResult.erro);
 
-        Compra compra = request;
+        var pedido = await request.CriarPedido(_context, cancellationToken);
 
-        await _context.Compras.AddAsync(compra, cancellationToken);
+        if (!pedido.ValorTotalValido(request.Total))
+            return BadRequest("Valor total invalido");
+        
+        await _context.Pedidos.AddAsync(pedido, cancellationToken);
         await _context.SaveChangesAsync(cancellationToken);
-        return Ok(compra.Id);
+        return Ok(pedido.Id);
     }
 }

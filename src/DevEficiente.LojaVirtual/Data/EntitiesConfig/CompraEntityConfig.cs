@@ -8,7 +8,7 @@ public sealed class CompraEntityConfig : IEntityTypeConfiguration<Compra>
 {
     public void Configure(EntityTypeBuilder<Compra> builder)
     {
-        builder.ToTable("Paises");
+        builder.ToTable("Compras");
 
         builder.HasKey(x => x.Id);
         
@@ -83,7 +83,7 @@ public sealed class CompraEntityConfig : IEntityTypeConfiguration<Compra>
         
         builder.HasOne(x => x.Estado)
             .WithMany(x => x.Compras)
-            .HasForeignKey(x => x.IdPais)
+            .HasForeignKey(x => x.IdEstado)
             .HasConstraintName("FK_Compra_Estado_IdEstado");
     }
 }
