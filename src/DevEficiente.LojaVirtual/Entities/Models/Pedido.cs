@@ -10,21 +10,24 @@ public sealed class Pedido
 
     public StatusPedido StatusPedido { get; set; }
 
+    public Compra? Compra { get; set; }
+
     public IReadOnlyCollection<ItemPedido> Itens => _itens;
 
-    private List<ItemPedido> _itens;
+    private List<ItemPedido> _itens = [];
 
-    public Pedido(Guid idCompra)
+    public Pedido(Guid idCompra, List<ItemPedido> itens)
     {
         Id = Guid.NewGuid();
         IdCompra = idCompra;
         StatusPedido = StatusPedido.Iniciado;
-        _itens = [];
+        _itens.AddRange(itens);
     }
 
-    public void AdicionarItens(List<ItemPedido> itens)
+    [Obsolete("Para uso do EF Core apenas", true)]
+    public Pedido()
     {
-        _itens.AddRange(itens);
+        
     }
 
     private decimal CalcularValorTotal()

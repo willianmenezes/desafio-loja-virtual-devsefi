@@ -85,5 +85,10 @@ public sealed class CompraEntityConfig : IEntityTypeConfiguration<Compra>
             .WithMany(x => x.Compras)
             .HasForeignKey(x => x.IdEstado)
             .HasConstraintName("FK_Compra_Estado_IdEstado");
+        
+        builder.HasOne(x => x.Pedido)
+            .WithOne(x => x.Compra)
+            .HasForeignKey<Pedido>(x => x.IdCompra)
+            .HasConstraintName("FK_Pedido_Compra_IdCompra");
     }
 }

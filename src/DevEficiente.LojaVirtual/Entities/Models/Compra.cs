@@ -30,6 +30,8 @@ public sealed class Compra
 
     public Estado? Estado { get; set; }
 
+    public Pedido? Pedido { get; set; }
+
     public Compra(
         Guid idPais,
         Guid? idEstado,
@@ -41,7 +43,8 @@ public sealed class Compra
         string complemento,
         string cidade,
         string telefone,
-        string cep)
+        string cep,
+        Func<Compra, Pedido> funcaoCriarPedido)
     {
         Id = Guid.NewGuid();
         IdPais = idPais;
@@ -55,5 +58,12 @@ public sealed class Compra
         Cidade = cidade;
         Telefone = telefone;
         Cep = cep;
+        Pedido = funcaoCriarPedido(this);
+    }
+
+    [Obsolete("Para uso do EF Core apenas", true)]
+    public Compra()
+    {
+        
     }
 }

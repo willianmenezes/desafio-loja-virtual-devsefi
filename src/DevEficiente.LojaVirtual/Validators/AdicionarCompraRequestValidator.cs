@@ -85,5 +85,8 @@ public sealed class AdicionarCompraRequestValidator : AbstractValidator<Adiciona
             .WithMessage("O cep deve ser informado")
             .Length(8)
             .WithMessage("O cep deve ter 8 caracteres");
+        
+        RuleFor(x => x.Pedido)
+            .SetValidator(new CriarPedidoRequestValidator(context));
     }
 }

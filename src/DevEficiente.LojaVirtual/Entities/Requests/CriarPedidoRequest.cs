@@ -7,36 +7,36 @@ namespace DevEficiente.LojaVirtual.Entities.Requests;
 
 public sealed class CriarPedidoRequest
 {
-    [JsonPropertyName("id_compra")] public Guid IdCompra { get; set; }
+    public decimal Total { get; set; }
 
-    [JsonPropertyName("total")] public decimal Total { get; set; }
+    public IEnumerable<ItemPedidoRequest>? Itens { get; set; }
 
-    [JsonPropertyName("itens")] public IEnumerable<ItemPedidoRequest>? Itens { get; set; }
-
-    public async Task<Pedido> CriarPedido(LojaVirtualContext context, CancellationToken cancellationToken)
+    public async Task<Func<Compra, Pedido>> CriarPedido(
+        LojaVirtualContext context,
+        CancellationToken cancellationToken)
     {
         var idsLivros = Itens!.Select(x => x.IdLivro);
 
         var livros = await context.Livros
-            .Where(x => idsLivros!.Contains(x.Id))
+            .Where(x => idsLivros.Contains(x.Id))
             .ToListAsync(cancellationToken);
 
-        var pedido = new Pedido(IdCompra);
+        return compra =>
+        {
+            var pedido = new Pedido(compra.Id, Itens!.Select(x => new ItemPedido(
+                x.IdLivro,
+                livros.First(y => y.Id == x.IdLivro).Preco,
+                x.Quantidade
+            )).ToList());
 
-        pedido.AdicionarItens(Itens!.Select(x => new ItemPedido(
-            pedido.Id,
-            x.IdLivro,
-            livros.First(y => y.Id == x.IdLivro).Preco,
-            x.Quantidade
-        )).ToList());
-
-        return pedido;
+            return pedido;
+        };
     }
 }
 
 public sealed class ItemPedidoRequest
 {
-    [JsonPropertyName("id_livro")] public Guid IdLivro { get; set; }
+    public Guid IdLivro { get; set; }
 
-    [JsonPropertyName("quantidade")] public int Quantidade { get; set; }
+    public int Quantidade { get; set; }
 }

@@ -1,3 +1,4 @@
+using DevEficiente.LojaVirtual.Data;
 using DevEficiente.LojaVirtual.Entities.Models;
 
 namespace DevEficiente.LojaVirtual.Entities.Requests;
@@ -28,19 +29,24 @@ public sealed class AdicionarCompraRequest
 
     public string Cep { get; set; }
 
-    public static implicit operator Compra(AdicionarCompraRequest request)
+    public CriarPedidoRequest Pedido { get; set; }
+
+    public async Task<Compra> ToModel(
+        LojaVirtualContext lojaVirtualContext,
+        CancellationToken cancellationToken)
     {
         return new Compra(
-            request.IdPais,
-            request.IdEstado,
-            request.Email,
-            request.Nome,
-            request.SobreNome,
-            request.Documento,
-            request.Endereco,
-            request.Complemento,
-            request.Cidade,
-            request.Telefone,
-            request.Cep);
+            IdPais,
+            IdEstado,
+            Email,
+            Nome,
+            SobreNome,
+            Documento,
+            Endereco,
+            Complemento,
+            Cidade,
+            Telefone,
+            Cep,
+            await Pedido.CriarPedido(lojaVirtualContext, cancellationToken));
     }
 }

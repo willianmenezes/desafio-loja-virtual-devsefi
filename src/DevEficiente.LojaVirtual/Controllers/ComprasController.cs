@@ -1,5 +1,4 @@
 using DevEficiente.LojaVirtual.Data;
-using DevEficiente.LojaVirtual.Entities.Models;
 using DevEficiente.LojaVirtual.Entities.Requests;
 using Microsoft.AspNetCore.Mvc;
 
@@ -9,7 +8,7 @@ namespace DevEficiente.LojaVirtual.Controllers;
 public class ComprasController : MainController
 {
     private readonly LojaVirtualContext _context;
-    
+
     public ComprasController(
         LojaVirtualContext context,
         IServiceProvider serviceProvider) : base(serviceProvider)
@@ -27,7 +26,7 @@ public class ComprasController : MainController
         if (validarErrorResult.contemErros)
             return BadRequest(validarErrorResult.erro);
 
-        Compra compra = request;
+        var compra = await request.ToModel(_context, cancellationToken);
 
         await _context.Compras.AddAsync(compra, cancellationToken);
         await _context.SaveChangesAsync(cancellationToken);

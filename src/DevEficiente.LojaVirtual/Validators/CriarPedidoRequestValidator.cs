@@ -10,18 +10,6 @@ public sealed class CriarPedidoRequestValidator : AbstractValidator<CriarPedidoR
 {
     public CriarPedidoRequestValidator(LojaVirtualContext context)
     {
-        RuleFor(request => request.IdCompra)
-            .NotEmpty()
-            .WithMessage("A compra deve ser informada")
-            .CustomAsync(async (idCompra, validationContext, cancellationToken) =>
-            {
-                var compra = await context.Compras
-                    .FirstOrDefaultAsync(x => x.Id == idCompra, cancellationToken);
-
-                if (compra is null)
-                    validationContext.AddFailure(new ValidationFailure("IdCompra", "A compra deve ser informada"));
-            });
-
         RuleFor(request => request.Total)
             .NotEmpty()
             .WithMessage("O valor total deve ser informado")

@@ -12,11 +12,30 @@ public sealed class AdicionarLivroRequestValidator : AbstractValidator<Adicionar
     {
         RuleFor(request => request.IdCategoria)
             .NotEmpty()
-            .WithMessage("A categoria deve ser informada");
+            .WithMessage("A categoria deve ser informada")
+            .CustomAsync(async (idCategoria, validationContext, cancellationToken) =>
+            {
+                var existeCategoria = await context.Categorias.AnyAsync(x =>
+                    x.Id == idCategoria, cancellationToken);
+
+                if (!existeCategoria)
+                    validationContext.AddFailure(new ValidationFailure("IdCategoria",
+                        "A categoria deve ser selecionada"));
+            });
+
 
         RuleFor(request => request.IdAutor)
             .NotEmpty()
-            .WithMessage("O autor deve ser informado");
+            .WithMessage("O autor deve ser informado")
+            .CustomAsync(async (idAutor, validationContext, cancellationToken) =>
+            {
+                var existeAutor = await context.Autores.AnyAsync(x =>
+                    x.Id == idAutor, cancellationToken);
+
+                if (!existeAutor)
+                    validationContext.AddFailure(new ValidationFailure("IdAutor", "O autor deve ser selecionado"));
+            });
+
 
         RuleFor(request => request.Titulo)
             .NotEmpty()
