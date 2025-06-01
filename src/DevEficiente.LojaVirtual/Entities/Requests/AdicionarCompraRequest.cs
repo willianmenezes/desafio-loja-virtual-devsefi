@@ -5,8 +5,6 @@ namespace DevEficiente.LojaVirtual.Entities.Requests;
 
 public sealed class AdicionarCompraRequest
 {
-    public Guid Id { get; }
-
     public Guid IdPais { get; set; }
 
     public Guid? IdEstado { get; set; }
