@@ -36,4 +36,5 @@ public class LojaVirtualContext : DbContext
     public DbSet<Compra> Compras { get; set; }
     public DbSet<Pedido> Pedidos { get; set; }
     public DbSet<ItemPedido> ItensPedido { get; set; }
+    public DbSet<Cupom> Cupons { get; set; }
 }
