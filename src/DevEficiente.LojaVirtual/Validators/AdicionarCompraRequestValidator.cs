@@ -30,6 +30,24 @@ public sealed class AdicionarCompraRequestValidator : AbstractValidator<Adiciona
                     validationContext.AddFailure(new ValidationFailure("Estado", "O estado precisa ser informado"));
             });
 
+        RuleFor(x => x.CodigoCupom)
+            .MaximumLength(50)
+            .WithMessage("O codigo do cupom deve conter menos que 50 caracteres")
+            .MustAsync(async (codigo, cancellationToken) =>
+            {
+                if (string.IsNullOrWhiteSpace(codigo))
+                    return true;
+
+                var cupom = await context.Cupons
+                    .FirstOrDefaultAsync(x => x.Codigo == codigo, cancellationToken);
+
+                if (cupom is null)
+                    return false;
+
+                return cupom.Validade >= DateTime.UtcNow;
+            })
+            .WithMessage("O codigo do cupom informado nao existe");
+
         RuleFor(request => request.Email)
             .NotEmpty()
             .WithMessage("O email deve ser preenchido")
@@ -85,7 +103,7 @@ public sealed class AdicionarCompraRequestValidator : AbstractValidator<Adiciona
             .WithMessage("O cep deve ser informado")
             .Length(8)
             .WithMessage("O cep deve ter 8 caracteres");
-        
+
         RuleFor(x => x.Pedido)
             .SetValidator(new CriarPedidoRequestValidator(context));
     }

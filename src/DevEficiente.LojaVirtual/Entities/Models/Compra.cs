@@ -26,6 +26,10 @@ public sealed class Compra
 
     public string Cep { get; private set; }
 
+    public Guid? IdCupom { get; set; }
+
+    public Cupom? Cupom { get; set; }
+
     public Pais? Pais { get; set; }
 
     public Estado? Estado { get; set; }
@@ -61,9 +65,32 @@ public sealed class Compra
         Pedido = funcaoCriarPedido(this);
     }
 
+    public void AdicionarCupomDesconto(Guid idCupom)
+    {
+        IdCupom = idCupom;
+    }
+
+    public decimal ObterValorTotalComDescontoCupom()
+    {
+        if (Pedido is null)
+        {
+            return 0;
+        }
+
+        var valorTotal = Pedido.CalcularValorTotal();
+
+        if (Cupom is null)
+        {
+            return valorTotal;
+        }
+
+        var desconto = Cupom.PercentualDesconto / 100m;
+
+        return valorTotal - (valorTotal * desconto);
+    }
+
     [Obsolete("Para uso do EF Core apenas", true)]
     public Compra()
     {
-        
     }
 }

@@ -30,7 +30,7 @@ public sealed class Pedido
         
     }
 
-    private decimal CalcularValorTotal()
+    public decimal CalcularValorTotal()
     {
         return Itens.Select(x => x.CalcularValorTotal()).Sum();
     }

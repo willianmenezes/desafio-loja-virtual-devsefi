@@ -27,6 +27,8 @@ public sealed class AdicionarCompraRequest
 
     public string Cep { get; set; }
 
+    public string CodigoCupom { get; set; }
+
     public CriarPedidoRequest Pedido { get; set; }
 
     public async Task<Compra> ToModel(

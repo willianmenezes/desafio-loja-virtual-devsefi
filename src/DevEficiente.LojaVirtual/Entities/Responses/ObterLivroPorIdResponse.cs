@@ -5,39 +5,29 @@ namespace DevEficiente.LojaVirtual.Entities.Responses;
 
 public sealed class ObterLivroPorIdResponse
 {
-    [JsonPropertyName("id")]
-    public Guid Id { get; set; }
+    [JsonPropertyName("id")] public Guid Id { get; set; }
 
-    [JsonPropertyName("id_categoria")]
-    public Guid IdCategoria { get; set; }
+    [JsonPropertyName("id_categoria")] public Guid IdCategoria { get; set; }
 
-    [JsonPropertyName("id_autor")]
-    public Guid IdAutor { get; set; }
+    [JsonPropertyName("id_autor")] public Guid IdAutor { get; set; }
 
-    [JsonPropertyName("titulo")]
-    public string? Titulo { get; set; }
+    [JsonPropertyName("titulo")] public string? Titulo { get; set; }
 
-    [JsonPropertyName("resumo")]
-    public string? Resumo { get; set; }
-    
-    [JsonPropertyName("sumario")]
-    public string? Sumario { get; set; }
+    [JsonPropertyName("resumo")] public string? Resumo { get; set; }
 
-    [JsonPropertyName("preco")]
-    public decimal Preco { get; set; }
+    [JsonPropertyName("sumario")] public string? Sumario { get; set; }
 
-    [JsonPropertyName("numero_paginas")]
-    public int NumeroPaginas { get; set; }
+    [JsonPropertyName("preco")] public decimal Preco { get; set; }
 
-    [JsonPropertyName("isbn")]
-    public string? Isbn { get; set; }
+    [JsonPropertyName("numero_paginas")] public int NumeroPaginas { get; set; }
 
-    [JsonPropertyName("data_publicacao")]
-    public DateTime DataPublicacao { get; set; }
+    [JsonPropertyName("isbn")] public string? Isbn { get; set; }
+
+    [JsonPropertyName("data_publicacao")] public DateTime DataPublicacao { get; set; }
 
     public static implicit operator ObterLivroPorIdResponse(Livro livro)
     {
-        return new ()
+        return new()
         {
             DataPublicacao = livro.DataPublicacao,
             Id = livro.Id,

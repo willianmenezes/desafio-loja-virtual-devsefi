@@ -1,6 +1,8 @@
 using DevEficiente.LojaVirtual.Data;
 using DevEficiente.LojaVirtual.Entities.Requests;
+using DevEficiente.LojaVirtual.Entities.Responses;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace DevEficiente.LojaVirtual.Controllers;
 
@@ -28,8 +30,38 @@ public class ComprasController : MainController
 
         var compra = await request.ToModel(_context, cancellationToken);
 
+        if (!string.IsNullOrWhiteSpace(request.CodigoCupom))
+        {
+            var cupom = await _context.Cupons
+                .FirstOrDefaultAsync(x => x.Codigo == request.CodigoCupom, cancellationToken);
+
+            compra.Cupom = cupom;
+            
+            compra.AdicionarCupomDesconto(cupom!.Id);
+        }
+
         await _context.Compras.AddAsync(compra, cancellationToken);
         await _context.SaveChangesAsync(cancellationToken);
         return Ok(compra.Id);
+    }
+
+    [HttpGet("{id}")]
+    public async Task<IActionResult> Obter(Guid id, CancellationToken cancellationToken)
+    {
+        var compra = await _context.Compras
+            .AsNoTracking()
+            .Include(x => x.Cupom)
+            .Include(x => x.Pais)
+            .Include(x => x.Estado)
+            .Include(x => x.Pedido)
+            .ThenInclude(x => x.Itens)
+            .FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
+
+        if (compra is null)
+            return NotFound();
+
+        ObterCompraPorIdResponse compraResponse = compra;
+        
+        return Ok(compraResponse);
     }
 }
