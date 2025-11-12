@@ -26,9 +26,9 @@ public sealed class Compra
 
     public string Cep { get; private set; }
 
-    public Guid? IdCupom { get; set; }
+    public Guid? IdCupomAplicado { get; set; }
 
-    public Cupom? Cupom { get; set; }
+    public CupomAplicado? CupomAplicado { get; set; }
 
     public Pais? Pais { get; set; }
 
@@ -65,9 +65,9 @@ public sealed class Compra
         Pedido = funcaoCriarPedido(this);
     }
 
-    public void AdicionarCupomDesconto(Guid idCupom)
+    public void AdicionarCupomDesconto(CupomAplicado cupom)
     {
-        IdCupom = idCupom;
+        CupomAplicado = cupom;
     }
 
     public decimal ObterValorTotalComDescontoCupom()
@@ -79,12 +79,12 @@ public sealed class Compra
 
         var valorTotal = Pedido.CalcularValorTotal();
 
-        if (Cupom is null)
+        if (CupomAplicado is null)
         {
             return valorTotal;
         }
 
-        var desconto = Cupom.PercentualDesconto / 100m;
+        var desconto = CupomAplicado.PercentualDesconto / 100m;
 
         return valorTotal - (valorTotal * desconto);
     }

@@ -55,7 +55,7 @@ public sealed class ObterCompraPorIdResponse
             Pedido = compra.Pedido!
         };
 
-        compraResponse.PossuiCupom = compra.IdCupom.HasValue;
+        compraResponse.PossuiCupom = compra.CupomAplicado is not null;
         compraResponse.ValorTotal = compra.Pedido!.CalcularValorTotal();
         compraResponse.ValorTotalComDesconto = compra.ObterValorTotalComDescontoCupom();
 

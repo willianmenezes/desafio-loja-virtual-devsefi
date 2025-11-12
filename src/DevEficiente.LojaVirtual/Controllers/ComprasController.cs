@@ -1,4 +1,5 @@
 using DevEficiente.LojaVirtual.Data;
+using DevEficiente.LojaVirtual.Entities.Models;
 using DevEficiente.LojaVirtual.Entities.Requests;
 using DevEficiente.LojaVirtual.Entities.Responses;
 using Microsoft.AspNetCore.Mvc;
@@ -35,9 +36,14 @@ public class ComprasController : MainController
             var cupom = await _context.Cupons
                 .FirstOrDefaultAsync(x => x.Codigo == request.CodigoCupom, cancellationToken);
 
-            compra.Cupom = cupom;
-            
-            compra.AdicionarCupomDesconto(cupom!.Id);
+            var cupomAplicaco = new CupomAplicado(
+                cupom!.Id,
+                cupom.Codigo,
+                cupom.PercentualDesconto,
+                cupom.Validade
+            );
+
+           compra.AdicionarCupomDesconto(cupomAplicaco);
         }
 
         await _context.Compras.AddAsync(compra, cancellationToken);
@@ -50,7 +56,6 @@ public class ComprasController : MainController
     {
         var compra = await _context.Compras
             .AsNoTracking()
-            .Include(x => x.Cupom)
             .Include(x => x.Pais)
             .Include(x => x.Estado)
             .Include(x => x.Pedido)

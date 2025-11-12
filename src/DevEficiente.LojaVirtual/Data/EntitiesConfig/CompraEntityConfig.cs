@@ -76,11 +76,6 @@ public sealed class CompraEntityConfig : IEntityTypeConfiguration<Compra>
             .IsUnicode(false)
             .IsRequired();
 
-        builder.Property(x => x.IdCupom)
-            .HasColumnName("IdCupom")
-            .HasColumnType("uuid")
-            .IsRequired(false);
-
         builder.HasOne(x => x.Pais)
             .WithMany(x => x.Compras)
             .HasForeignKey(x => x.IdPais)
@@ -95,10 +90,5 @@ public sealed class CompraEntityConfig : IEntityTypeConfiguration<Compra>
             .WithOne(x => x.Compra)
             .HasForeignKey<Pedido>(x => x.IdCompra)
             .HasConstraintName("FK_Pedido_Compra_IdCompra");
-
-        builder.HasOne(x => x.Cupom)
-            .WithMany(x => x.Compras)
-            .HasForeignKey(x => x.IdCupom)
-            .HasConstraintName("FK_Compra_Cupom_IdCupom");
     }
 }

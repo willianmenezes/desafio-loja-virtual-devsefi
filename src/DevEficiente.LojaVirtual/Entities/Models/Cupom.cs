@@ -10,8 +10,6 @@ public sealed class Cupom
 
     public DateTime Validade { get; set; }
 
-    public IEnumerable<Compra>? Compras { get; set; }
-
     public Cupom(string codigo, int percentualDesconto, DateTime validade)
     {
         Id = Guid.NewGuid();
